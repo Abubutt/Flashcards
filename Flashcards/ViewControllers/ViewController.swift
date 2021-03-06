@@ -21,5 +21,17 @@ class ViewController: UIViewController {
         frontLabel.isHidden = true
     }
     
+    func updateFlashcard(question: String, answer: String) {
+        
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?){
+        
+        let navigationController = segue.destination as! UINavigationController
+        
+        let creationController = navigationController.topViewController as! CreationViewController
+        creationController.flashcardsController = self
+    }
+    
 }
 
