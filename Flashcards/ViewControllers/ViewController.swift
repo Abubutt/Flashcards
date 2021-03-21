@@ -21,6 +21,7 @@ class ViewController: UIViewController {
     
     var flashcards = [Flashcard]()
     var currentIndex = 0
+    var count = 0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -37,7 +38,15 @@ class ViewController: UIViewController {
 
     @IBAction func didTapOnFlashcard(_ sender: Any) {
         
-        frontLabel.isHidden = true
+        if count == 0{
+            frontLabel.isHidden = true
+            count = count + 1
+        }
+        else{
+            count = 0
+            frontLabel.isHidden = false
+        }
+        
     }
     
     func updateFlashcard(question: String, answer: String) {
@@ -89,6 +98,7 @@ class ViewController: UIViewController {
         else{
             nextButton.isEnabled = true
         }
+        
     }
     
     func updateLabels(){
