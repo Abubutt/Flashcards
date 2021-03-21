@@ -7,7 +7,7 @@ Simple flashcard app that has a question and answer and allows the user to add a
 
 ### App Walk-though
 
-<img src="https://i.imgur.com/xukB9nN.gif" width=200><br>
+<img src="https://i.imgur.com/CDraTSi.gif" width=200><br>
 
 
 ## Required
