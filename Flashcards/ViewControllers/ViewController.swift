@@ -18,10 +18,12 @@ class ViewController: UIViewController {
     
     @IBOutlet weak var prevButton: UIButton!
     @IBOutlet weak var nextButton: UIButton!
+    @IBOutlet weak var card: UIView!
     
     var flashcards = [Flashcard]()
     var currentIndex = 0
     var count = 0
+    var x = 300.0
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,15 +40,22 @@ class ViewController: UIViewController {
 
     @IBAction func didTapOnFlashcard(_ sender: Any) {
         
-        if count == 0{
-            frontLabel.isHidden = true
-            count = count + 1
-        }
-        else{
-            count = 0
-            frontLabel.isHidden = false
-        }
+        flipFlashcard()
         
+    }
+    func flipFlashcard(){
+        UIView.transition(with: card, duration: 0.3, options: .transitionFlipFromRight, animations: {
+            if self.count == 0{
+                self.frontLabel.isHidden = true
+                self.count = self.count + 1
+            }
+            else{
+                self.count = 0
+                self.frontLabel.isHidden = false
+            }
+        })
+
+    
     }
     
     func updateFlashcard(question: String, answer: String) {
@@ -63,7 +72,6 @@ class ViewController: UIViewController {
         
         updateNextPrevButtons()
         
-        updateLabels()
         
         saveAllFlashcardsToDisk()
     }
@@ -79,16 +87,16 @@ class ViewController: UIViewController {
     @IBAction func didTapOnPrev(_ sender: Any) {
         currentIndex = currentIndex - 1
         
-        updateLabels()
         
         updateNextPrevButtons()
+        animateCardOut(num: -300.0)
     }
     @IBAction func didTapOnNext(_ sender: Any) {
         currentIndex = currentIndex + 1
         
-        updateLabels()
         
         updateNextPrevButtons()
+        animateCardOut(num: Float(x))
     }
     
     func updateNextPrevButtons() {
@@ -122,6 +130,23 @@ class ViewController: UIViewController {
         if let dictionaryArray = UserDefaults.standard.array(forKey: "flashcards") as? [[String:String]]{
             let savedCards = dictionaryArray.map{dictionary -> Flashcard in return Flashcard(question:dictionary["question"]!, answer: dictionary["answer"]!)}
             flashcards.append(contentsOf: savedCards)
+        }
+    }
+    
+    func animateCardOut(num:Float){
+        UIView.animate(withDuration: 0.2,  animations: {
+            self.card.transform = CGAffineTransform.identity.translatedBy(x: CGFloat((-1.0*num)), y: 0.0)
+        }, completion: { finished in
+            self.updateLabels()
+            
+            self.animateCardIn(num:num)
+        })
+    }
+    
+    func animateCardIn(num:Float){
+        card.transform = CGAffineTransform.identity.translatedBy(x: CGFloat(num), y: 0.0)
+        UIView.animate(withDuration: 0.2){
+            self.card.transform = CGAffineTransform.identity
         }
     }
 }
